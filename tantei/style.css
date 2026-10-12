@@ -1,0 +1,2120 @@
+/* --- CSS Variables & Themes --- */
+:root {
+  /* バナーの高さ。実機では bannerAdSizeChanged の実測値で上書きされる */
+  --ad-banner-h: 50px;
+  --bg-dark: #070a12;
+  --bg-panel: #0d1322;
+  --bg-panel-light: #162035;
+  --color-text: #e2e8f0;
+  --color-muted: #8a9cb4;
+  --color-gold: #d4af37;
+  --color-gold-hover: #f1c40f;
+  --color-accent: #c0392b;
+  --color-accent-hover: #e74c3c;
+  --color-teal: #1abc9c;
+  --color-teal-hover: #2ecc71;
+  --color-manila: #e6c594;
+  --color-manila-dark: #ccab78;
+  --shadow-glow: 0 0 20px rgba(212, 175, 55, 0.35);
+  --shadow-accent-glow: 0 0 20px rgba(231, 76, 60, 0.4);
+  --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.9);
+  --font-serif: "Hiragino Mincho ProN", "HiraMinProN-W3", "Yu Mincho", YuMincho, "Noto Serif JP", "Times New Roman", serif;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* --- Base Reset & Disablers --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input, textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+html, body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- Layout Container --- */
+.game-container {
+  width: 100%;
+  max-width: 1024px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Tactile Shrink Feedbacks (スマホの押し込み感) --- */
+.stage-card:active:not(.locked) {
+  transform: scale(0.96) !important;
+}
+
+.btn-control:active:not(:disabled),
+.btn-action:active:not(:disabled),
+.btn-lobby:active,
+.btn-reset:active,
+.btn-mute:active {
+  transform: scale(0.95) !important;
+}
+
+/* ==========================================================================
+   Home/Title Screen (タイトル画面)
+   ========================================================================== */
+
+.title-screen.transition-out {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* ==========================================================================
+   Lobby / Stage Selection Screen (ロビー画面)
+   ========================================================================== */
+.lobby-screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-panel);
+  transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.lobby-screen.transition-out {
+  transform: translateX(-100%);
+}
+
+.lobby-header {
+  background: linear-gradient(180deg, rgba(4, 6, 10, 0.98) 0%, rgba(13, 19, 34, 0.98) 100%);
+  padding: 20px;
+  padding-top: calc(20px + env(safe-area-inset-top));
+  padding-left: calc(20px + env(safe-area-inset-left));
+  padding-right: calc(20px + env(safe-area-inset-right));
+  border-bottom: 2px solid #1e293b;
+  flex-shrink: 0;
+}
+
+.lobby-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.lobby-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--color-gold);
+  border: 1.5px solid var(--color-gold);
+  border-radius: 4px;
+  padding: 2px 8px;
+  letter-spacing: 0.15em;
+  background: rgba(212, 175, 55, 0.08);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-mute {
+  background: transparent;
+  border: 1px solid #23304c;
+  color: var(--color-muted);
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-mute:hover {
+  border-color: var(--color-gold);
+  color: #fff;
+}
+
+.btn-mute .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.lobby-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+/* --- 買い切りVIP --- */
+/* ロビーの外向きリンク（ほかのゲーム／ブラウザ版の「全話はアプリで」） */
+.lobby-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 9px 12px;
+  border: 1px solid rgba(138, 156, 180, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+.lobby-link-cta {
+  border-color: var(--color-gold);
+  background: linear-gradient(180deg, rgba(212,175,55,0.18), rgba(212,175,55,0.06));
+}
+.lobby-link-label {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  border: 1px solid rgba(138, 156, 180, 0.4);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+.lobby-link-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.lobby-link-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+.lobby-link-cta .lobby-link-name { color: var(--color-gold); }
+.lobby-link-sub {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lobby-link-arrow {
+  flex: 0 0 auto;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-muted);
+}
+
+.vip-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.btn-vip {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-gold);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(212,175,55,0.16), rgba(212,175,55,0.06));
+  color: var(--color-gold);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.btn-vip .icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.vip-price {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 復元は控えめでよいが、隠してはいけない（審査で見つけられる必要がある） */
+.btn-vip-restore {
+  flex: 0 0 auto;
+  padding: 10px 12px;
+  border: 1px solid #2a3550;
+  border-radius: 8px;
+  background: transparent;
+  color: #8e9ab4;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.btn-vip:disabled,
+.btn-vip-restore:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.vip-owned {
+  margin-top: 10px;
+  color: var(--color-gold);
+  font-size: 0.82rem;
+}
+
+.lobby-stats {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.lobby-stats span {
+  color: var(--color-gold);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.btn-lobby-reset {
+  background: transparent;
+  border: 1px solid #23304c;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-lobby-reset:hover {
+  border-color: var(--color-accent);
+  color: #fff;
+  background: rgba(192, 41, 43, 0.15);
+}
+
+/* Stage Cards Grid */
+.stage-grid {
+  flex: 1 1 0%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+  padding-left: calc(16px + env(safe-area-inset-left));
+  padding-right: calc(16px + env(safe-area-inset-right));
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  /* グリッドではなくフレックスの折り返しにする。
+     display:grid だと行の高さが内容ではなくコンテナ高で等分され、
+     カードが22pxまで潰れた（15行×22.4px＋隙間がちょうどグリッド高と一致していた）。
+     フレックスの折り返しなら、各カードは中身の高さで積まれる。 */
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 14px;
+}
+
+.stage-card {
+  width: calc(50% - 7px);
+  flex: 0 0 auto;
+  position: relative;
+  background: var(--bg-panel-light);
+  border: 1px solid #2a3550;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.stage-card:hover:not(.locked) {
+  border-color: var(--color-gold);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), var(--shadow-glow);
+}
+
+/* 未解禁は絵を伏せる。何が写っているかは分かるが、細部は読めない */
+.stage-card.locked .card-thumb img {
+  filter: brightness(0.34) saturate(0.35) blur(2px);
+}
+
+.card-no {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background: rgba(4, 6, 11, 0.85);
+  border: 1px solid #3a4c6d;
+  color: #cdd8ea;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.02em;
+}
+
+.card-solved {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(26, 188, 156, 0.92);
+  color: #04120e;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.card-lock {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-lock svg {
+  width: 30px;
+  height: 30px;
+  fill: rgba(230, 238, 250, 0.8);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.9));
+}
+
+.card-info {
+  padding: 8px 9px 10px;
+}
+
+.card-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.35;
+  /* 2行を超えたら省略。カードの高さを揃えるため */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.2em;
+}
+
+.stage-card.locked .card-title {
+  color: #5d6a80;
+}
+
+.card-stars {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+}
+
+.card-stars .star-active {
+  color: var(--color-gold-hover);
+}
+
+.card-stars .star-inactive {
+  color: #333d52;
+}
+
+/* ==========================================================================
+   Play Screen
+   ========================================================================== */
+
+/* --- Header Section --- */
+
+/* --- Viewport for Image (Main Area) --- */
+
+/* ラッパーには必ず「確定した高さ」を持たせる。
+   inline-block + max-height:100% だと、ラッパー自身の高さが auto のままなので
+   中の img の max-height:100% が none に解決され、画像が原寸のまま縦に溢れる。
+   （実測：518px のビューポートに 1672px の画像が入り、上下が見えないまま
+     等倍ではパンもできないので絵の大半に触れなかった）
+   ラッパーを viewport いっぱいの flex にして中央寄せすると、
+   img の max-height:100% が実寸に解決されて contain 表示になる。
+   ラッパー中心＝画像中心なので、transform-origin: center も従来どおり成立する。 */
+
+/* 画像が読み込めなかったときに、何も無い黒画面に見せない */
+
+/* --- Selection Target Pin --- */
+.tap-pin {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  margin-left: -21px;
+  margin-top: -21px;
+  pointer-events: none;
+  z-index: 10;
+  will-change: left, top;
+}
+
+.pin-center {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-accent-hover);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px var(--color-accent-hover);
+}
+
+.pin-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--color-accent-hover);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--color-accent-hover), inset 0 0 10px var(--color-accent-hover);
+  animation: pin-pulse 1.4s infinite ease-in-out;
+}
+
+/* --- Footer & Control Bar --- */
+
+/* Specific buttons scale */
+
+/* Primary confirm action button */
+
+.icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* --- Modals & Overlays --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(3, 4, 7, 0.88);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: var(--bg-panel-light);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 480px;
+  padding: 24px;
+  /* 画面からはみ出さない。セーフエリアぶんも引く。 */
+  max-height: calc(100vh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-dark);
+  text-align: center;
+  transform: scale(0.85);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #2d3d5a;
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1);
+}
+
+/* ==========================================================================
+   Case Introduction Dossier Modal (事件簿フォルダ風UI)
+   ========================================================================== */
+.dossier-folder {
+  background: linear-gradient(135deg, var(--color-manila) 0%, var(--color-manila-dark) 100%);
+  color: #1e1b18; /* Dark ink text for realism */
+  border: 2px solid #5a4428;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+  padding: 24px 20px 20px;
+  position: relative;
+}
+
+/* Folder paper tab design on top */
+.dossier-tabs {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  display: flex;
+  gap: 4px;
+  transform: translateY(-98%);
+  pointer-events: none;
+}
+
+.dossier-tab {
+  background: var(--color-manila);
+  border: 2px solid #5a4428;
+  border-bottom: none;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #40301a;
+  padding: 4px 12px;
+  border-radius: 6px 6px 0 0;
+  letter-spacing: 0.05em;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.15);
+}
+
+.dossier-tab.active {
+  background: var(--color-manila);
+  padding-bottom: 2px;
+  margin-bottom: -2px;
+}
+
+.dossier-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: #96281b; /* Stamped red */
+  border: 2px solid #96281b;
+  border-radius: 4px;
+  padding: 2px 10px;
+  letter-spacing: 0.15em;
+  margin-bottom: 12px;
+  background: rgba(150, 40, 27, 0.05);
+  box-shadow: 0 0 4px rgba(150, 40, 27, 0.1);
+  transform: rotate(-3deg);
+}
+
+.dossier-folder h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #2b1f0d;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid rgba(90, 68, 40, 0.3);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  font-family: "Georgia", serif;
+}
+
+.dossier-body {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(90, 68, 40, 0.25);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 14px;
+  text-align: left;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+  /* 固定の max-height を置かないこと。
+     以前ここが 250px（スマホでは 180px）で固定されており、
+     本文は 321px あったため、どの端末でも必ず見切れてスクロールが要った。
+     高さの制限はモーダル全体（.modal-content の max-height）だけで行う。 */
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.dossier-section {
+  margin-bottom: 16px;
+}
+
+.dossier-section:last-child {
+  margin-bottom: 0;
+}
+
+.dossier-section-title {
+  font-size: 0.88rem;
+  font-weight: 900;
+  color: #3b2c15;
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+  border-left: 3px solid #8e6c3d;
+  padding-left: 6px;
+}
+
+.dossier-target-section {
+  border-top: 1px dashed rgba(90, 68, 40, 0.2);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.dossier-target-section .dossier-section-title {
+  color: #a04000; /* Distinct goals tint */
+  border-left-color: #a04000;
+}
+
+.dossier-body p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #2c251d;
+  font-family: "Courier New", Courier, monospace; /* dossier typewriter style */
+  font-weight: 700;
+}
+
+.dossier-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;      /* ボタンは絶対に押し出されない */
+}
+
+.dossier-tabs,
+.dossier-header {
+  flex-shrink: 0;
+}
+
+.dossier-body {
+  flex: 1 1 auto;      /* 足りないときはここだけが縮む */
+}
+
+.dossier-instruction {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #a04000;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
+#btn-start-investigation {
+  background: linear-gradient(135deg, #4b3821 0%, #2f2214 100%);
+  color: var(--color-manila);
+  border: 1px solid #2f2214;
+  font-size: 1.05rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#btn-start-investigation:hover {
+  background: linear-gradient(135deg, #5c452a 0%, #3e2d1a 100%);
+  transform: scale(1.02);
+}
+
+/* ==========================================================================
+   Success Case Solved Folder (解決調書)
+   ========================================================================== */
+.success-content {
+  border: 2px solid var(--color-gold);
+  box-shadow: var(--shadow-glow), var(--shadow-dark);
+}
+
+.success-badge {
+  width: 54px;
+  height: 54px;
+  background: rgba(212, 175, 55, 0.15);
+  border: 2px solid var(--color-gold);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+  color: var(--color-gold);
+}
+
+.badge-icon {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+.success-content h2 {
+  font-size: 1.4rem;
+  color: var(--color-gold);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+}
+
+/* Success Stars Layout */
+/* 事件名は解いた瞬間に初めて出る。ここが「名前がついた」瞬間になる */
+.solved-case-name {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--color-gold);
+  letter-spacing: 0.06em;
+  text-align: center;
+  margin: 6px 0 2px;
+}
+
+.rating-stars {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 2.2rem;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.rating-stars .star-icon {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.rating-stars .star-icon.star-active {
+  color: var(--color-gold);
+  text-shadow: 0 0 10px rgba(212,175,55,0.7);
+  animation: star-bounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  transform: scale(0);
+}
+
+.rating-stars .star-icon.star-active:nth-child(1) { animation-delay: 0.1s; }
+.rating-stars .star-icon.star-active:nth-child(2) { animation-delay: 0.25s; }
+.rating-stars .star-icon.star-active:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes star-bounce {
+  to { transform: scale(1); }
+}
+
+.performance-details {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin-bottom: 12px;
+}
+
+.performance-details span {
+  color: #fff;
+  font-weight: 700;
+}
+
+.explanation-box {
+  background: rgba(11, 15, 25, 0.6);
+  border: 1px solid #23304c;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  text-align: left;
+  /* 解説はこのゲームの結論そのもの。高さを固定すると必ず途中で切れる。
+     実測では 375x812 の端末で 54〜128px はみ出し、毎回スクロールしないと読み切れなかった。
+     modal-content は flex 列なので、余った高さを全部この枠に渡す。
+     画面が本当に足りないときだけ、この枠の中でスクロールさせる。 */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.explanation-box p {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #f1f5f9;
+}
+
+.success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-share {
+  background: #0f1419;
+  color: #fff;
+  border: 1px solid #2f3336;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-share:hover {
+  background: #182026;
+  border-color: #4b4f52;
+}
+
+/* Reset Confirmation Modal styling */
+.confirm-reset-content {
+  border: 1px solid var(--color-accent);
+  box-shadow: var(--shadow-accent-glow), var(--shadow-dark);
+}
+
+.confirm-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin: 16px 0;
+  text-align: left;
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: #fff;
+  border: 1px solid #ff7675;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #ff5252 100%);
+}
+
+/* Hint Modal & Simulated Ad Styles */
+.hint-content {
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #3b4f74;
+}
+
+/* ヒントは「確認パネル → 本文」の2段。表示中のものだけ display させる */
+.hint-confirm,
+.hint-body {
+  width: 100%;
+  display: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.hint-confirm.active,
+.hint-body.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hint-cost {
+  font-size: 0.92rem;
+  color: var(--color-muted);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.cost-em {
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+.hint-confirm h2 {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.hint-content h2 {
+  font-size: 1.25rem;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.hint-box {
+  background: rgba(11, 15, 25, 0.6);
+  border-left: 4px solid var(--color-gold);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.hint-box p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+}
+
+/* Action Buttons (Modals) */
+.btn-action {
+  width: 100%;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#btn-next {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: #fff;
+  box-shadow: var(--shadow-accent-glow);
+}
+
+#btn-next:hover {
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #ff5252 100%);
+  transform: translateY(-1px);
+}
+
+.btn-close-modal {
+  background: #2d3d5a;
+  color: #fff;
+  border: 1px solid #3b4f74;
+}
+
+.btn-close-modal:hover {
+  background: #394d70;
+}
+
+/* --- Toasts (Incorrect Alerts) --- */
+.toast-container {
+  position: fixed;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.toast {
+  background: rgba(192, 41, 43, 0.95);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 82, 82, 0.4);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: toast-in 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards,
+             toast-out 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045) 2.5s forwards;
+  max-width: min(90vw, 420px);
+  line-height: 1.6;
+  /* 誘導メッセージは2〜3行になる。トーストは2.8秒で消えるので読み切れる長さに保つこと */
+}
+
+/* ==========================================================================
+   Visual Effects Elements (Juiciness)
+   ========================================================================== */
+/* Success Gold Stars Spawner Container */
+.particle-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.particle {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  background: var(--color);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: explode 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  opacity: 0.8;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes explode {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0); opacity: 0; }
+}
+
+/* Incorrect Tap Ripple (Red ring circle with X) */
+.wrong-ripple {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  margin-left: -25px;
+  margin-top: -25px;
+  border: 3px solid #e74c3c;
+  border-radius: 50%;
+  background: rgba(231, 76, 60, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #e74c3c;
+  font-size: 24px;
+  font-weight: 900;
+  pointer-events: none;
+  z-index: 9999;
+  animation: wrong-ripple-anim 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes wrong-ripple-anim {
+  0% { transform: scale(0.5); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Failure Screen Shake */
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0); }
+  10%, 30%, 50%, 70%, 90% { transform: translate(-6px, -2px); }
+  20%, 40%, 60%, 80% { transform: translate(6px, 2px); }
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* --- Keyframe Animations --- */
+@keyframes toast-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-out {
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pin-pulse {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(0.85); opacity: 0.6; }
+}
+
+@keyframes pulse-button {
+  0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.6); }
+  70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+}
+
+@keyframes logo-pulse {
+  0% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.35); transform: scale(1); }
+  50% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.6); transform: scale(1.05); }
+  100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.35); transform: scale(1); }
+}
+
+@keyframes prompt-pulse {
+  0% { opacity: 0.35; transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1.04); }
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 480px) {
+  .lobby-header {
+    padding: 15px;
+    padding-top: calc(15px + env(safe-area-inset-top));
+  }
+  .lobby-title {
+    font-size: 1.3rem;
+  }
+  .stage-grid {
+    padding: 15px;
+    gap: 12px;
+  }
+  .game-header {
+    padding: 10px 15px;
+    padding-top: calc(10px + env(safe-area-inset-top));
+  }
+  .stage-title {
+    font-size: 1.1rem;
+  }
+  .game-footer {
+    padding: 10px 15px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  }
+  .control-panel {
+    gap: 8px;
+  }
+  .btn-control {
+    padding: 10px 8px;
+    font-size: 0.8rem;
+    gap: 4px;
+  }
+  .btn-zoom {
+    flex: 2.2;
+  }
+  .btn-hint {
+    flex: 1.8;
+  }
+  .btn-accuse {
+    flex: 2.8;
+  }
+  .icon {
+    width: 15px;
+    height: 15px;
+  }
+  .modal-content {
+    padding: 20px;
+  }
+  .dossier-body {
+    padding: 13px;
+  }
+  /* 小さい画面では文字と余白を詰めて、スクロールせずに読み切れるようにする */
+  .dossier-body p {
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+  .dossier-section {
+    margin-bottom: 10px;
+  }
+  .dossier-section-title {
+    font-size: 0.78rem;
+  }
+  .dossier-header h2 {
+    font-size: 1.05rem;
+  }
+  .dossier-instruction {
+    font-size: 0.74rem;
+  }
+  .toast {
+    font-size: 0.85rem;
+    padding: 10px 16px;
+  }
+
+}
+
+/* Scrollbar customizations */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: #23304c;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3b4f74;
+}
+
+/* ==========================================================================
+   誤答クールダウンと「惜しい」表示
+   ========================================================================== */
+
+/* 誤答直後の指摘ボタン。残り秒数を出して、待たされている理由を明示する */
+
+/* 惜しい／誘導のトーストは、ただの不正解と色で区別する */
+.toast.toast-near {
+  border-left: 4px solid var(--color-gold);
+  background: rgba(48, 38, 12, 0.96);
+  color: #f6e6b8;
+  /* 誘導文は60字前後ある。既定の2.8秒では読み切れないので消えるのを遅らせる */
+  animation: toast-in 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards,
+             toast-out 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045) 4.4s forwards;
+}
+
+/* ==========================================================================
+   ゾーン採寸モード（index.html?zone=1 のときだけ現れる開発用UI）
+   ========================================================================== */
+.zone-box {
+  position: absolute;
+  display: none;
+  border: 2px solid var(--color-accent-hover);
+  background: rgba(231, 76, 60, 0.18);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.zone-panel {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 2000;
+  max-width: 94vw;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: rgba(6, 9, 16, 0.95);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.82rem;
+  white-space: nowrap;
+  overflow-x: auto;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* ==========================================================================
+   広告バナーの場所取り
+   ========================================================================== */
+/* バナーは WebView の「外側」に描かれるので、その分だけ中身を下げる必要がある。
+   ただし実機でプラグインが動いたときだけ（body.has-ads）確保すること。
+   ブラウザで確保すると、ただの黒い余白が居座る。
+   位置を下に変えないこと：下段は［等倍に戻す］［ヒント］［指摘する］の列で、
+   広告を隣接させると誤タップを誘発し、AdMob の無効なトラフィックとして扱われる。 */
+body.has-ads .game-container {
+  /* セーフエリア（ノッチ）＋バナーの実寸。50px 固定にしていたら、実機で
+     ノッチ分（約60px）が足りず、見出しがバナーの裏に隠れた。
+     --ad-banner-h は showBanner のあと bannerAdSizeChanged で実測値に差し替わる。
+     8px は、広告と本文がくっついて見えないようにするための余白。 */
+  padding-top: calc(env(safe-area-inset-top) + var(--ad-banner-h) + 8px);
+}
+
+/* 上の余白でセーフエリアを見ているので、ヘッダー側の env() は打ち消す。
+   両方に入れると二重に空いて、画面が狭くなる。 */
+body.has-ads .game-header,
+body.has-ads .lobby-header {
+  padding-top: 12px;
+}
+
+/* ==========================================================================
+   クリア後の選択肢と、控えめなボタン
+   ========================================================================== */
+.success-sub-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.success-sub-actions .btn-action {
+  flex: 1;
+}
+
+/* 主導線（次の事件へ）より一段弱く見せる。押し間違いを減らす */
+.btn-action.btn-secondary {
+  background: #1c273c;
+  border: 1px solid #3a4c6d;
+  color: #c7d3e6;
+  box-shadow: none;
+}
+
+.btn-action.btn-secondary:hover {
+  background: #273552;
+  border-color: var(--color-gold);
+}
+
+/* 事件簿の中に置く「戻る」。紙の色に合わせて浮かせない */
+.btn-action.btn-quiet {
+  background: transparent;
+  border: 1px solid rgba(90, 68, 40, 0.5);
+  color: #5a4428;
+  box-shadow: none;
+  font-size: 0.82rem;
+  padding: 8px;
+}
+
+.btn-action.btn-quiet:hover {
+  background: rgba(90, 68, 40, 0.12);
+}
+
+/* 縦が短い画面（Safariのアドレスバーが出ている状態、小型端末）向けの詰め。
+   事件概要は「スクロールせずに読み切れる」ことを最優先にする。
+   ここを消すと、文章の長い回で本文が見切れる。 */
+@media (max-height: 680px) {
+  .modal-content {
+    padding: 16px;
+  }
+  .dossier-folder {
+    padding: 16px 14px 14px;
+  }
+  .dossier-body {
+    padding: 11px;
+    margin-bottom: 10px;
+  }
+  .dossier-body p {
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .dossier-section {
+    margin-bottom: 8px;
+  }
+  .dossier-header {
+    margin-bottom: 8px;
+  }
+  .dossier-header h2 {
+    font-size: 1rem;
+  }
+  .dossier-tabs {
+    display: none;      /* 飾りなので、狭いときは真っ先に捨てる */
+  }
+  .dossier-instruction {
+    font-size: 0.72rem;
+  }
+  .btn-action {
+    padding: 10px;
+  }
+}
+
+/* 縦の狭い端末で、解決の解説を読み切れるようにする。
+   実測（320x568）では解説が140pxぶん枠から溢れ、毎回スクロールが要った。
+   削る順番は「飾り → 余白 → 文字」。解説そのものは最後まで削らない。 */
+@media (max-height: 680px) {
+  .success-badge {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 6px;
+  }
+  .badge-icon { width: 22px; height: 22px; }
+  .success-content h2 { font-size: 1.15rem; margin-bottom: 4px; }
+  .explanation-box { padding: 9px 12px; margin-bottom: 10px; }
+  .explanation-box p { font-size: 0.83rem; line-height: 1.55; }
+}
+
+@media (max-height: 600px) {
+  .success-badge { display: none; }
+  .rating-stars { font-size: 1.3rem; margin-bottom: 4px; }
+  .performance-details { font-size: 0.74rem; margin-bottom: 6px; }
+  .success-actions { gap: 6px; }
+  .btn-share { display: none; }   /* 共有は捜査本部からでもできる */
+}
+
+/* 常時表示の捜査目標。モーダルを閉じた後も読み返せるようにするためのもの。
+   参考にしたゲームでも目標は上部に出しっぱなしになっている。 */
+
+/* ==========================================================================
+   供述パネル（画像＋3つの供述から、矛盾している人物を選ぶ）
+   ========================================================================== */
+
+/* 供述カード。指で押しやすい高さを確保しつつ、3枚が画面に収まるようにする */
+
+/* 供述型のときは「等倍に戻す」だけ残し、指摘ボタンは告発に変わる */
+
+/* 正解したとき、矛盾していた箇所を絵の上で示す枠 */
+.evidence-frame {
+  position: absolute;
+  border: 3px solid var(--color-gold-hover);
+  border-radius: 4px;
+  box-shadow: 0 0 0 9999px rgba(3, 5, 9, 0.55), 0 0 18px var(--color-gold-hover);
+  pointer-events: none;
+  z-index: 12;
+  animation: evidence-pop 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+}
+
+@keyframes evidence-pop {
+  from { opacity: 0; transform: scale(1.35); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@media (max-height: 680px) {
+  .suspect-statement { font-size: 0.78rem; line-height: 1.38; }
+  .suspect { padding: 7px 10px; }
+}
+
+/* 供述パネルの開閉。畳むと現場の絵が画面いっぱいになる */
+
+/* 畳むときは display で消す。max-height のアニメーションは、
+   高さが確定していない flex レイアウトの中では効かないことがある
+   （実際にここで、クラスは当たっているのに高さが変わらなかった）。
+   演出より確実さを優先する。 */
+
+/* ==========================================================================
+   捜査パネル：供述と資料の切り替え
+   ========================================================================== */
+
+/* 資料は「紙」に見せる。供述（青いカード）と役割が違うことを色で分ける */
+
+/* ==========================================================================
+   現場写真の全画面表示
+   ========================================================================== */
+/* 9:16の写真と読み物を同じ9:16の画面に並べると、必ずどちらかが潰れる。
+   実測で、供述パネルが画面の51%を占め写真が115x205px まで縮んでいた。
+   普段は縮小して置き、調べるときだけ全画面にする。
+   ジェスチャーは #image-viewport に付いているので、その要素ごと広げれば
+   ピンチとパンのコードをそのまま流用できる。 */
+
+/* 画面が短いとき（Safariのアドレスバーが出ている状態）に写真が潰れないようにする。
+   供述パネルは縮んで内部スクロールに切り替わり、写真の高さが先に確保される。
+   これが無いと、縦の狭い端末で写真がほぼ見えなくなる。 */
+
+/* ==========================================================================
+   推理型の写真プレビュー（帯状）
+   ========================================================================== */
+/* 9:16の写真をそのまま縮めて置くと、供述パネルに圧迫されて 67x119px まで縮み、
+   何が写っているか分からなくなる（実測）。
+   普段は横長に切り抜いた帯として見せ、調べるときだけ全画面にする。 */
+
+/* 帯の下端に、写真であることが分かる薄い境界を入れる */
+
+/* ==========================================================================
+   プレイ画面：現場写真を全画面に敷き、その上に重ねる
+   ==========================================================================
+   以前は写真を帯状に縮めて供述を下に並べていたが、実機では写真がほとんど見えず、
+   さらに画面下半分が黒い空白になっていた。写真が主役で、読み物は必要なときだけ出す。 */
+.play-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #04060b;
+  transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.image-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #04060b;
+  touch-action: none;
+}
+
+.image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.stage-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  pointer-events: auto;
+}
+
+.stage-image.img-error {
+  min-width: 60%;
+  min-height: 40%;
+  border: 2px dashed #3b4f74;
+}
+
+/* --- 写真の上に重なるヘッダー --- */
+.game-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  padding-top: calc(8px + env(safe-area-inset-top));
+  padding-left: calc(12px + env(safe-area-inset-left));
+  padding-right: calc(12px + env(safe-area-inset-right));
+  /* 写真の上に載せるので、上端だけ暗く落として文字を読ませる */
+  background: linear-gradient(180deg, rgba(3, 5, 9, 0.92) 0%, rgba(3, 5, 9, 0.65) 62%, rgba(3, 5, 9, 0) 100%);
+  pointer-events: none;
+}
+
+.game-header > * {
+  pointer-events: auto;
+}
+
+.hdr-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(10, 15, 25, 0.72);
+  border: 1px solid #3a4c6d;
+  cursor: pointer;
+}
+
+.hdr-btn .icon {
+  width: 18px;
+  height: 18px;
+  fill: #dbe4f2;
+}
+
+.hdr-titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.stage-count {
+  display: block;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+.stage-title {
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+.btn-reset-zoom {
+  position: absolute;
+  top: calc(58px + env(safe-area-inset-top));
+  right: calc(12px + env(safe-area-inset-right));
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 7px;
+  background: rgba(10, 15, 25, 0.8);
+  border: 1px solid #46577a;
+  color: #d7e0ef;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-reset-zoom .icon {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+/* --- 下部の呼び出しバー --- */
+.case-tabs {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 12;
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  padding-left: calc(12px + env(safe-area-inset-left));
+  padding-right: calc(12px + env(safe-area-inset-right));
+  background: linear-gradient(0deg, rgba(3, 5, 9, 0.94) 0%, rgba(3, 5, 9, 0.7) 60%, rgba(3, 5, 9, 0) 100%);
+}
+
+.case-tab {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 9px 4px;
+  border-radius: 10px;
+  background: rgba(18, 26, 44, 0.94);
+  border: 1px solid #3a4c6d;
+  color: #cbd6e8;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+}
+
+.case-tab:active {
+  transform: scale(0.96);
+}
+
+.case-tab.active {
+  border-color: var(--color-gold);
+  background: rgba(38, 30, 12, 0.96);
+  color: var(--color-gold);
+}
+
+.case-tab .icon {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+}
+
+.tab-badge {
+  position: absolute;
+  top: 4px;
+  right: 10px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.6rem;
+  font-style: normal;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- 迫り上がるシート（供述・資料） --- */
+.sheet-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 13;
+  background: rgba(3, 5, 9, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.24s ease;
+}
+
+.sheet-scrim.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 14;
+  display: flex;
+  flex-direction: column;
+  max-height: 78%;
+  background: linear-gradient(180deg, #131c2f 0%, #0b1120 100%);
+  border-top: 1px solid var(--color-gold);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -10px 34px rgba(0, 0, 0, 0.75);
+  padding: 6px 14px 12px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.sheet.open {
+  transform: translateY(0);
+}
+
+.sheet-handle {
+  align-self: center;
+  width: 44px;
+  height: 4px;
+  border-radius: 2px;
+  border: none;
+  background: #45557a;
+  margin: 4px 0 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sheet-title {
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  color: var(--color-gold);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.sheet-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sheet-foot {
+  flex-shrink: 0;
+  padding-top: 10px;
+}
+
+/* --- 供述カード --- */
+.suspect-list,
+.doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suspect {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #17223b;
+  border: 1px solid #33415e;
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.suspect.selected {
+  border-color: var(--color-gold);
+  background: #26314f;
+  box-shadow: 0 0 0 1px var(--color-gold) inset;
+}
+
+/* 1回外したら、その供述は「照合済み」として畳む。
+   消すのではなく残す。読み返す対象から外れただけ、という状態を見せたい。
+   畳むのは1枚まで（script.js の clearedSuspect）。2枚消すと残り1枚が答えになる。 */
+.suspect.cleared {
+  opacity: 0.4;
+  background: #10182a;
+  border-color: #263149;
+  border-style: dashed;
+  cursor: default;
+  position: relative;
+}
+
+.suspect.cleared .suspect-statement {
+  text-decoration: line-through;
+  text-decoration-color: rgba(226, 232, 240, 0.35);
+}
+
+.suspect.cleared::after {
+  content: "照合済み";
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #7c8aa3;
+  border: 1px solid #33415e;
+  border-radius: 3px;
+  padding: 1px 5px;
+  background: #0c1322;
+}
+
+.suspect-name {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  margin-bottom: 3px;
+}
+
+.suspect-statement {
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #dee6f3;
+  /* データ側の改行をそのまま反映する。
+     1文が長いので、文末で折らないとスマホでは塊にしか見えない。 */
+  white-space: pre-line;
+}
+
+/* --- 資料（紙の見た目） --- */
+.doc {
+  background: rgba(230, 197, 148, 0.94);
+  border: 1px solid #8a6f45;
+  border-radius: 5px;
+  padding: 10px 12px;
+  color: #241d14;
+}
+
+.doc-title {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #6b4f22;
+  margin-bottom: 4px;
+}
+
+.doc-body {
+  display: block;
+  font-size: 0.83rem;
+  line-height: 1.75;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  white-space: pre-line;
+}
+
+/* --- 告発ボタン --- */
+.btn-accuse {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 13px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(180deg, var(--color-accent-hover) 0%, var(--color-accent) 100%);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.94rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(192, 57, 43, 0.4);
+}
+
+.btn-accuse .icon {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+}
+
+.btn-accuse:disabled {
+  background: #26314a;
+  color: #6d7a90;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.btn-accuse.cooling {
+  background: #2a1d1d;
+  color: #b98c8c;
+}
+
+/* 正解したとき、根拠になった箇所を写真の上で示す枠 */
+.evidence-frame {
+  position: absolute;
+  border: 3px solid var(--color-gold-hover);
+  border-radius: 4px;
+  box-shadow: 0 0 0 9999px rgba(3, 5, 9, 0.6), 0 0 20px var(--color-gold-hover);
+  pointer-events: none;
+  z-index: 11;
+  animation: evidence-pop 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+}
+
+@keyframes evidence-pop {
+  from { opacity: 0; transform: scale(1.3); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* トーストは告発ボタンに重ならない高さに出す（実機で重なっていた） */
+.toast-container {
+  bottom: 30%;
+}
+
+/* ==========================================================================
+   タイトル画面（作り直し）
+   ==========================================================================
+   以前は黒地に細い丸と等幅ゴシックだけで、雰囲気がまったく無かった。
+   明朝体・縦の罫・ヴィネット・紙の質感で「事件簿」の空気を出す。
+   画像素材は使わず、CSSだけで作っている。 */
+.title-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 文字はすべて暗い上60%に収める。
+     中央寄せのままだと、サブタイトルと開始文言が背景の机とランプに重なり、
+     一番明るい場所に文字が乗って読めなくなる（実測で64%と73%の位置にあった）。 */
+  justify-content: flex-start;
+  /* 背景画像の題字が y20〜32% にあるので、その下の暗部から始める */
+  padding-top: 36vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 38%, #1b2740 0%, #0a1020 45%, #04060b 100%);
+}
+
+/* 背景画像の受け入れ口。
+   ★ title-bg.png を用意したら、下のセレクタから .has-bg を外すこと。それだけで敷かれる。
+   いま .has-bg を付けたままなのは、画像が無い状態で url() を書くと
+   毎回404を出し続けるため（存在確認のためだけに読みに行っても同じことになる）。
+   画像側は「上半分が暗く空いている」ことが条件（題字が乗るため）。
+   作り方は docs/title-art-brief.md */
+.title-screen {
+  background-image:
+    linear-gradient(180deg, rgba(4, 6, 11, 0.45) 0%, rgba(4, 6, 11, 0.10) 42%, rgba(4, 6, 11, 0.55) 100%),
+    url("title-bg.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat;
+}
+
+/* 走査線のような細い横縞。奥行きが出て、のっぺりしなくなる */
+.title-background {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg, rgba(255, 255, 255, 0.022) 0px, rgba(255, 255, 255, 0.022) 1px,
+    transparent 1px, transparent 4px);
+  pointer-events: none;
+}
+
+/* 四隅を落として中央に視線を集める */
+.title-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 65% 55% at 50% 45%, transparent 40%, rgba(2, 3, 6, 0.85) 100%);
+  pointer-events: none;
+}
+
+.title-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 虫眼鏡は小さく、飾りとして上に置く */
+.logo-icon-glow {
+  display: none;   /* 背景に拡大鏡が写っているので、輪の飾りは重複になる */
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  margin-bottom: 22px;
+  box-shadow: 0 0 22px rgba(212, 175, 55, 0.18), inset 0 0 14px rgba(212, 175, 55, 0.08);
+}
+
+.logo-svg {
+  width: 21px;
+  height: 21px;
+  fill: var(--color-gold);
+}
+
+/* 題字「探偵は君だ」は背景画像に入っている（y20〜32%）。
+   CSS側で二重に出さないこと。文字を変えるときは画像ごと差し替える。 */
+.game-logo-text {
+  display: none;
+}
+
+.game-logo-text-hidden-rules {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-indent: 0.16em;
+  color: #f2ece0;
+  line-height: 1.28;
+  text-align: center;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9), 0 0 42px rgba(212, 175, 55, 0.14);
+}
+
+/* 題字の上下を細い金の罫で挟む */
+.game-logo-text::before,
+.game-logo-text::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 1px;
+  margin: 16px auto;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  opacity: 0.75;
+}
+
+.game-logo-sub {
+  font-family: var(--font-serif);
+  position: relative;
+  padding-top: 14px;
+  font-size: 0.84rem;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  color: #9fb0c8;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.start-prompt {
+  margin-top: 40px;
+}
+
+.pulse-text {
+  font-size: 0.76rem;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  color: var(--color-gold);
+  font-weight: 700;
+  animation: title-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes title-pulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
+}
+
+.title-footer {
+  position: absolute;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  left: 0;
+  right: 0;
+  z-index: 2;
+  text-align: center;
+}
+
+.title-footer p {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: #4a586e;
+}
+
+/* ==========================================================================
+   ロビーのカード（実機で潰れていたのを直す）
+   ==========================================================================
+   aspect-ratio は iOS の実機で効かず、カードが数十pxの帯に潰れていた。
+   padding-top の割合指定なら、どの環境でも必ず高さが出る。 */
+.card-thumb {
+  position: relative;
+  width: 100%;
+  /* 高さは vw で直接指定する。
+     aspect-ratio も padding-top の割合指定も、グリッドの行が auto のときに
+     正しく効かず、カードが22pxまで潰れた（実測）。割合に頼らない指定にする。
+     2列・左右16pxの余白・隙間14px のとき、カード幅は約 50vw-23px。
+     その 4:3 にあたる高さが 66vw-30px。 */
+  height: calc(66vw - 30px);
+  min-height: 150px;
+  max-height: 300px;
+  overflow: hidden;
+  background: #05070c;
+}
+
+.card-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+  display: block;
+}
+
+.lobby-title {
+  font-family: var(--font-serif);
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.lobby-badge {
+  font-family: var(--font-serif);
+  letter-spacing: 0.18em;
+}
+
+.lobby-stats {
+  letter-spacing: 0.06em;
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+/* 解説の改行を反映（データ側で文末に改行を入れている） */
+.explanation-box p {
+  white-space: pre-line;
+  line-height: 1.75;
+}
+
+/* 事件概要の本文も同様 */
+.dossier-body p {
+  white-space: pre-line;
+}

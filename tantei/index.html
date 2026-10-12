@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>探偵は君だ｜インストール不要で遊べる推理ゲーム</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0d1322">
+  <meta name="description" content="現場写真と資料、三人の供述。食い違う一点を見抜き、犯人を告発せよ。全30話の推理ゲーム。">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <!-- iOS で「ホーム画面に追加」したとき、Safari のバーを消して全画面にする。
+       manifest だけでは古い iOS で効かないので、この3つは残しておくこと。 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="探偵は君だ">
+  <meta name="apple-itunes-app" content="app-id=6807240751">
+  <link rel="canonical" href="https://bieso96.github.io/tantei/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="探偵は君だ">
+  <meta property="og:title" content="探偵は君だ｜インストール不要で遊べる推理ゲーム">
+  <meta property="og:description" content="現場の絵と3人の供述、2枚の資料。嘘をついている1人を見抜け。第1〜3話はブラウザですぐ遊べます。全30話はアプリで無料。">
+  <meta property="og:url" content="https://bieso96.github.io/tantei/">
+  <meta property="og:image" content="https://bieso96.github.io/tantei/og/top.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="探偵は君だ｜インストール不要で遊べる推理ゲーム">
+  <meta name="twitter:description" content="現場の絵と3人の供述、2枚の資料。嘘をついている1人を見抜け。第1〜3話はブラウザですぐ遊べます。全30話はアプリで無料。">
+  <meta name="twitter:image" content="https://bieso96.github.io/tantei/og/top.jpg">
+</head>
+<body>
+  <div class="game-container" id="game-container">
+    
+    <!-- ==================== タイトル画面 (Home Screen) ==================== -->
+    <div class="title-screen" id="title-screen" style="display: flex;">
+      <div class="title-background"></div>
+      <div class="title-content">
+        <div class="logo-area">
+          <div class="logo-icon-glow">
+            <svg class="logo-svg" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
+          <h1 class="game-logo-text">探偵は君だ</h1>
+          <p class="game-logo-sub">～ 現場に残された矛盾を暴け ～</p>
+        </div>
+        <div class="start-prompt">
+          <span class="pulse-text">TOUCH TO START</span>
+        </div>
+      </div>
+      <div class="title-footer">
+        <p>© 2026 DETECTIVE STUDIO</p>
+      </div>
+    </div>
+    
+    <!-- ==================== ロビー画面 ==================== -->
+    <div class="lobby-screen" id="lobby-screen" style="display: none;">
+      <header class="lobby-header">
+        <div class="lobby-header-top">
+          <span class="lobby-badge">CASE SELECT</span>
+          <div class="header-actions">
+            <!-- 音量ミュートボタン -->
+            <button class="btn-mute" title="音量を切り替える">
+              <svg class="icon mute-icon" viewBox="0 0 24 24">
+                <path class="speaker-on-path" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                <path class="speaker-off-path" style="display:none;" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+              </svg>
+            </button>
+            <button class="btn-reset btn-lobby-reset" id="btn-lobby-reset" title="ゲーム進捗を完全に初期化する">
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+              </svg>
+              進行リセット
+            </button>
+          </div>
+        </div>
+        <h1 class="lobby-title">捜査本部 - 事件簿一覧</h1>
+        <p class="lobby-stats">解決した事件: <span id="solved-count">0</span> / <span id="total-count">30</span></p>
+
+        <!-- 買い切りで広告を消す。実機で課金が使えるときだけ出す -->
+        <div class="vip-bar" id="vip-bar" style="display:none;">
+          <button class="btn-vip" id="btn-vip" type="button">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2l2.9 6.2 6.6.8-4.9 4.5 1.3 6.5L12 16.9 6.1 20l1.3-6.5L2.5 9l6.6-.8L12 2z"/>
+            </svg>
+            広告を消す<span class="vip-price" id="vip-price"></span>
+          </button>
+          <button class="btn-vip-restore" id="btn-restore" type="button">購入を復元</button>
+        </div>
+        <p class="vip-owned" id="vip-owned" style="display:none;">広告は表示されません。ありがとうございます。</p>
+
+        <!-- ブラウザ版だけ：全話はアプリで -->
+        <button class="lobby-link lobby-link-cta" id="web-cta" type="button" style="display:none;">
+          <span class="lobby-link-text">
+            <span class="lobby-link-name">全30話はアプリで遊べます（無料）</span>
+            <span class="lobby-link-sub">オフライン対応・App Store で見る</span>
+          </span>
+          <span class="lobby-link-arrow" aria-hidden="true">›</span>
+        </button>
+
+        <!-- アプリだけ：ほかのゲームの紹介 -->
+        <button class="lobby-link" id="other-game" type="button" style="display:none;">
+          <span class="lobby-link-label">ほかのゲーム</span>
+          <span class="lobby-link-text">
+            <span class="lobby-link-name" id="other-game-name"></span>
+            <span class="lobby-link-sub" id="other-game-sub"></span>
+          </span>
+          <span class="lobby-link-arrow" aria-hidden="true">›</span>
+        </button>
+      </header>
+      
+      <main class="stage-grid" id="stage-grid">
+        <!-- JSでカードを動的に生成します -->
+      </main>
+    </div>
+
+    <!-- ==================== プレイ画面 ==================== -->
+    <!-- 現場写真を画面いっぱいに敷き、その上にヘッダーとタブを重ねる。
+         以前は写真を帯状に縮めて供述を下に並べていたが、写真がほとんど見えず、
+         さらに画面下半分が黒い空白になっていた（実機で確認）。
+         写真が主役で、供述と資料は必要なときだけ迫り上がる。 -->
+    <div class="play-screen" id="play-screen" style="display: none;">
+
+      <!-- 現場写真（全画面・ピンチ拡大可） -->
+      <main class="image-viewport" id="image-viewport">
+        <div class="image-wrapper" id="image-wrapper">
+          <img src="stage1.webp" alt="事件現場写真" class="stage-image" id="stage-image" draggable="false">
+        </div>
+        <div class="tap-pin" id="tap-pin" style="display: none;">
+          <div class="pin-ring"></div>
+          <div class="pin-center"></div>
+        </div>
+      </main>
+
+      <!-- 写真の上に重なるヘッダー -->
+      <header class="game-header" id="game-header">
+        <button class="hdr-btn" id="btn-back-lobby" title="捜査本部へ戻る">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </button>
+        <div class="hdr-titles">
+          <span class="stage-count" id="stage-count">FILE 1 / 30</span>
+          <h1 class="stage-title" id="stage-title">第1話：握らされたペン</h1>
+        </div>
+        <button class="hdr-btn btn-mute" title="音量を切り替える">
+          <svg class="icon mute-icon" viewBox="0 0 24 24">
+            <path class="speaker-on-path" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            <path class="speaker-off-path" style="display:none;" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- 等倍に戻す（拡大したときだけ出る） -->
+      <button class="btn-reset-zoom" id="btn-zoom-reset" style="display:none;" title="等倍に戻す">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M15 3h6v6h-2V5h-4V3zM3 3h6v2H5v4H3V3zm16 16v-4h2v6h-6v-2h4zM5 19h4v2H3v-6h2v4z"/></svg>
+        等倍
+      </button>
+
+      <!-- 下部の呼び出しバー。押すとシートが迫り上がる -->
+      <nav class="case-tabs" id="case-tabs">
+        <button class="case-tab" data-sheet="suspects" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <span>供述</span><em class="tab-badge" id="tab-badge-suspects">3</em>
+        </button>
+        <button class="case-tab" data-sheet="docs" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          <span>資料</span><em class="tab-badge" id="tab-badge-docs">2</em>
+        </button>
+        <button class="case-tab" id="btn-hint" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+          <span>ヒント</span>
+        </button>
+      </nav>
+
+      <!-- 迫り上がるシート。供述と資料をここに出す -->
+      <div class="sheet-scrim" id="sheet-scrim"></div>
+      <section class="sheet" id="sheet" aria-hidden="true">
+        <button class="sheet-handle" id="sheet-handle" type="button" aria-label="閉じる"></button>
+        <h2 class="sheet-title" id="sheet-title">供述</h2>
+        <div class="sheet-body">
+          <div class="suspect-list" id="suspect-list"></div>
+          <div class="doc-list" id="doc-list" style="display:none;"></div>
+        </div>
+        <div class="sheet-foot" id="sheet-foot">
+          <button class="btn-control btn-accuse" id="btn-accuse" disabled>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span id="accuse-label">この人物を告発</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- 事件概要モーダル (事件簿フォルダ風の紙タブ構造) -->
+  <div class="modal-overlay" id="intro-modal">
+    <div class="modal-content intro-content dossier-folder">
+      <!-- フォルダの紙タブ風の装飾 -->
+      <div class="dossier-tabs">
+        <div class="dossier-tab active">SUMMARY</div>
+        <div class="dossier-tab">TARGET</div>
+      </div>
+      <div class="dossier-header">
+        <span class="dossier-badge">CONFIDENTIAL</span>
+        <h2 id="intro-title">第1話：右利きの遺書</h2>
+      </div>
+      <div class="dossier-body">
+        <div class="dossier-section">
+          <h4 class="dossier-section-title">【現場の状況】</h4>
+          <p id="intro-story">事件の状況テキストがここに入ります。</p>
+        </div>
+        <div class="dossier-section dossier-target-section">
+          <h4 class="dossier-section-title">【捜査目標】</h4>
+          <p id="intro-target-desc">捜査目標テキストがここに入ります。</p>
+        </div>
+      </div>
+      <div class="dossier-footer">
+        <p class="dossier-instruction">写真は2本指で拡大できる。供述と資料を突き合わせ、食い違う一人を告発せよ。</p>
+        <button class="btn-action" id="btn-start-investigation">捜査開始</button>
+        <button class="btn-action btn-quiet" id="btn-intro-back">捜査本部へ戻る</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 正解＆解説モーダル -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-content success-content case-solved-folder">
+      <div class="success-badge">
+        <svg class="badge-icon" viewBox="0 0 24 24">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+        </svg>
+      </div>
+      <h2>正解！事件解決！</h2>
+      <p class="solved-case-name" id="solved-case-name"></p>
+      
+      <!-- 星評価 (JSでスターポップ演出) -->
+      <div class="rating-stars" id="success-stars">
+        <span class="star-icon">★</span>
+        <span class="star-icon">★</span>
+        <span class="star-icon">★</span>
+      </div>
+
+      <!-- パフォーマンス詳細 -->
+      <div class="performance-details">
+        <p>クリアタイム: <span id="clear-time-val">0秒</span></p>
+        <p>ミス回数: <span id="clear-mistakes-val">0回</span></p>
+      </div>
+
+      <div class="explanation-box">
+        <p id="explanation-text">トリックの解説文がここに入ります。</p>
+      </div>
+
+      <div class="success-actions">
+        <button class="btn-action" id="btn-next">次の事件へ</button>
+        <div class="success-sub-actions">
+          <button class="btn-action btn-secondary" id="btn-retry">もう一度挑戦</button>
+          <button class="btn-action btn-secondary" id="btn-to-lobby">捜査本部へ</button>
+        </div>
+        <!-- 友達に出題（共有シート。相手はブラウザでこの事件を遊べる） -->
+        <button class="btn-action btn-share" id="btn-share-x">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
+          </svg>
+          この事件を友達に出題する
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ヒントモーダル -->
+  <div class="modal-overlay" id="hint-modal">
+    <div class="modal-content hint-content">
+      <!-- 支払いの確認（旧：疑似広告オーバーレイ）
+           待たせるだけで何も生まない偽広告をやめ、対価を明示する方式にした -->
+      <div class="hint-confirm" id="hint-confirm">
+        <h2>ヒントを見ますか？</h2>
+        <p class="hint-cost" id="hint-cost">この事件の評価が <span class="cost-em">★1つ</span> 下がります。</p>
+        <div class="confirm-buttons">
+          <button class="btn-action" id="btn-hint-yes">ヒントを見る</button>
+          <button class="btn-action btn-close-modal" id="btn-hint-no">やめる</button>
+        </div>
+      </div>
+
+      <!-- ヒント本体 -->
+      <div class="hint-body" id="hint-body">
+        <h2>捜査のヒント</h2>
+        <div class="hint-box">
+          <p id="hint-text">ヒントのテキストがここに入ります。</p>
+        </div>
+        <button class="btn-action btn-close-modal" id="btn-close-hint">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 進行状況リセット確認モーダル -->
+  <div class="modal-overlay" id="confirm-reset-modal">
+    <div class="modal-content confirm-reset-content">
+      <h2>捜査情報の初期化</h2>
+      <p class="confirm-text">これまで解決した事件の記録、星評価、クリアタイムがすべて初期化されますが、本当によろしいですか？</p>
+      <div class="confirm-buttons">
+        <button class="btn-action btn-danger" id="btn-confirm-reset-yes">初期化する</button>
+        <button class="btn-action btn-close-modal" id="btn-confirm-reset-no">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- トースト通知用の容器 -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>window.TANTEI_WEB = true;</script>
+  <script src="script.js"></script>
+</body>
+</html>
