@@ -1,0 +1,28 @@
+:root { --ink: #0a0b0c; --text: #e8e4da; --dim: #a2a69f; --line: #2a2e31; --red: #c9261d; --mincho: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif; --gothic: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--ink); color: var(--text); font-family: var(--gothic); line-height: 1.8; }
+a { color: inherit; }
+.hero { position: relative; min-height: 88vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 20px 48px; overflow: hidden; }
+.hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; z-index: -1; }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10,11,12,.2) 0%, rgba(10,11,12,.1) 40%, rgba(10,11,12,.85) 75%, var(--ink) 100%); }
+.wrap { max-width: 560px; margin: 0 auto; width: 100%; }
+h1 { margin: 0; font-family: var(--mincho); font-weight: 800; font-size: clamp(40px, 12vw, 64px); letter-spacing: .06em; line-height: 1.1; text-shadow: 1px 0 0 rgba(255,59,47,.5); }
+.sub { margin: 14px 0 0; font-family: var(--mincho); font-size: 14px; letter-spacing: .4em; color: var(--dim); }
+.sub::before { content: ""; display: inline-block; width: 24px; height: 1px; background: var(--red); vertical-align: middle; margin-right: 12px; }
+.lead { margin: 28px 0 0; font-family: var(--mincho); font-size: 17px; line-height: 2; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.cta a { display: inline-block; padding: 12px 20px; border: 1px solid var(--text); text-decoration: none; font-family: var(--mincho); font-weight: 700; letter-spacing: .12em; }
+.cta a.primary { background: var(--text); color: var(--ink); }
+section { padding: 48px 20px; border-top: 1px solid var(--line); }
+h2 { margin: 0 0 18px; font-family: var(--mincho); font-weight: 800; font-size: 22px; letter-spacing: .14em; }
+p, li { font-size: 15px; }
+ul { padding-left: 1.2em; }
+.shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 18px; }
+.shots img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border: 1px solid var(--line); filter: grayscale(.2); }
+.note { font-size: 13px; color: var(--dim); }
+footer { padding: 32px 20px 48px; border-top: 1px solid var(--line); font-size: 13px; color: var(--dim); }
+footer a { margin-right: 18px; }
+.doc h1 { font-size: 28px; text-shadow: none; }
+.doc main { padding: 40px 20px; }
+.doc h2 { margin-top: 32px; font-size: 18px; }
